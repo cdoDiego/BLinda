@@ -1,6 +1,6 @@
 import { agregarClase, quitarClase } from "./utils.js";
 
-const channel = "cdoDiego";
+const channel = "ArtLira";
 const REWARD_BELINDA = "Belinda";
 let customRewards = [];
 const banWords = ['puto', 'puta', 'put0'];
