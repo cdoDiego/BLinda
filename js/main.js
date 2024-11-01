@@ -59,6 +59,7 @@ async function fetchBLinda(txtInput) {
     try {
         // Hacemos la petición con async y await
         const response = await fetch('https://api.sws.speechify.com/v1/audio/speech', options);
+        first();
         const result = await response.json();
 
         // Obtener el audio en base64 del campo audio_data
@@ -71,6 +72,7 @@ async function fetchBLinda(txtInput) {
         const audioUrl = URL.createObjectURL(audioBlob);
         const audio = new Audio(audioUrl);
         audio.onended = end;
+        start();
         audio.play();
         console.log("Audio reproduciéndose...");
     } catch (err) {
@@ -134,17 +136,13 @@ function tts(txt) {
     pendientes = pendientes.concat(txtfrases(txt));
     console.log('tts');
     console.log(pendientes);
-    if (!isPlaying) first();
+    if (!isPlaying) end();
 }
 
 function first() {
     quitarClase('main', "initialHide");
     quitarClase('main', "SlideLeftOut");
     agregarClase('main', "SlideRightIn");
-    setTimeout(() => {
-        agregarClase('main', 'UpDown');
-        end();
-    }, 1000);
 }
 
 function start() {
@@ -157,13 +155,16 @@ function end() {
     if (pendientes.length > 0) {
         let txt = pendientes[0];
         pendientes.splice(0, 1);
-        if (isPharse(txt)) playFrase(txt);
-        else fetchBLinda(txt)
-        start();
+        if (isPharse(txt)) {
+            first();
+            playFrase(txt);
+        }
+        else fetchBLinda(txt);
     } else {
         quitarClase('boca', "UpDown");
         quitarClase('main', "SlideRightIn");
         agregarClase('main', "SlideLeftOut");
+        isPlaying = false;
     }
 }
 
