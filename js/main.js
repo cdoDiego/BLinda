@@ -10,6 +10,8 @@ let isPlaying = false;
 const frases = ['ganando como siempre', 'no quiero ver a nadie', 'eres mi angel de paz', 'ay que calor me da', 'beli belica'];
 const sounds = ['Ganando.mp3', 'Nadie.mp3', 'Angel.mp3', 'Calor.mp3', 'Belica.mp3'];
 let Audios = [];
+//const voice_id = 'bcce747f-73e4-472d-b189-888cf8b7ed8d'; // BLinda
+const voice_id = 'c2cfb0ba-3a50-4d82-8a5d-cfcd401957af'; //BLinda2
 
 const pozoleSound = new Audio('sonidos/pozole.mp3');
 
@@ -50,10 +52,11 @@ async function fetchBLinda(txtInput) {
             Authorization: 'eTb7YKAQhwIBh9CxBhRD0GV4wkHN0266VHhw9qLkQ7I='
         },
         body: JSON.stringify({
-            voice_id: 'bcce747f-73e4-472d-b189-888cf8b7ed8d',
+            voice_id: voice_id,
             input: txtInput,
             audio_format: 'mp3',
-            language: 'es-ES'
+            language: 'es-ES',
+            model: 'simba-multilingual'
         })
     };
     try {
