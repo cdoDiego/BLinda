@@ -83,6 +83,13 @@ async function fetchBLinda(txtInput) {
     }
 }
 
+function esTextoLegible(texto) {
+    const patron = /[a-zA-Z0-9]/; // Verifica si el texto contiene al menos una letra o número 
+    if (patron.test(texto)) {
+        return true;
+    } return false;
+}
+
 function banW(txt) {
     if (banWords.length > 0) {
         for (let s of banWords) {
@@ -162,7 +169,13 @@ function end() {
             first();
             playFrase(txt);
         }
-        else fetchBLinda(txt);
+        else {
+            if(esTextoLegible(txt)) {
+                fetchBLinda(txt);
+            } else {
+                end();
+            }
+        }
     } else {
         quitarClase('boca', "UpDown");
         quitarClase('main', "SlideRightIn");
