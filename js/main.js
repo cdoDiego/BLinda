@@ -2,6 +2,7 @@ import { agregarClase, quitarClase } from "./utils.js";
 
 const channel = "ArtLira";
 const REWARD_BELINDA = "Belinda";
+const REWARD_BELINDA_ID = "58a0e597-ed59-489b-8831-f7dacbdf84df";
 let customRewards = [];
 const banWords = ['puto', 'puta', 'put0'];
 let pendientes = [];
@@ -16,22 +17,24 @@ const voice_id = 'c2cfb0ba-3a50-4d82-8a5d-cfcd401957af'; //BLinda2
 const pozoleSound = new Audio('sonidos/pozole.mp3');
 
 function init() {
+    console.log('init');
     setRewards(channel);
     loadAudios();
     ComfyJS.Init(channel);
 }
 
 function setRewards(channelName) {
+    console.log('getRewards Channel: ', channelName);
     fetch(`https://api.jebaited.net/twitchItems/${channelName}`)
         .then(response => {
             if (!response.ok) {
+                console.log('error reponse: ', response);
                 throw new Error("Error en la solicitud");
             }
             return response.json(); // Convierte la respuesta en JSON
         })
         .then(data => {
             let rewards = data[0].data.community.channel.communityPointsSettings.customRewards;
-
             for (let reward of rewards) {
                 customRewards[reward["id"]] = {
                     cost: reward["cost"],
@@ -85,9 +88,7 @@ async function fetchBLinda(txtInput) {
 
 function esTextoLegible(texto) {
     const patron = /[a-zA-Z0-9]/; // Verifica si el texto contiene al menos una letra o número 
-    if (patron.test(texto)) {
-        return true;
-    } return false;
+    return !!(patron.test(texto));
 }
 
 function banW(txt) {
@@ -124,7 +125,7 @@ function removeEmpty(txts) {
 function txtfrases(txt) {
     let txts = [txt];
     for (let p of frases) {
-        var spl = new RegExp("(" + p + ")", "g");
+        let spl = new RegExp("(" + p + ")", "g");
         console.log(spl);
         let aux = [];
         for (let t of txts) {
@@ -185,11 +186,11 @@ function end() {
 }
 
 ComfyJS.onChat = (user, message, flags, self, extra) => {
+    console.log(extra);
     if (extra.customRewardId) {
         const id = extra.customRewardId;
-        const reward = customRewards[id];
-        if (reward != undefined) {
-            if (reward.name == REWARD_BELINDA && !banW(message)) {
+        if (id != undefined) {
+            if (id == REWARD_BELINDA_ID && !banW(message)) {
                 tts(message);
             }
         }
