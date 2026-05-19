@@ -52,7 +52,7 @@ async function fetchBLinda(txtInput) {
         headers: {
             accept: '*/*',
             'content-type': 'application/json',
-            Authorization: 'eTb7YKAQhwIBh9CxBhRD0GV4wkHN0266VHhw9qLkQ7I='
+            Authorization: 'Bearer ' +'eTb7YKAQhwIBh9CxBhRD0GV4wkHN0266VHhw9qLkQ7I='
         },
         body: JSON.stringify({
             voice_id: voice_id,
